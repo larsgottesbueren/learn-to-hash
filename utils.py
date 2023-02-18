@@ -476,7 +476,9 @@ def dist_rank(data_x, k, data_y=None, largest=False, opt=None, include_self=Fals
         chunk_sz = 90 #50 if over 1.1 mil
         #chunk_sz = 500 #1000 if over 1.1 mil 
     else:
-        chunk_sz = 3000    
+        chunk_sz = 3000  
+    print('chunk_sz=', chunk_sz, '. Setting to 256 instead')
+    chunk_sz = 256  
 
     if k+1 > len(data_y):
         k = len(data_y) - 1
@@ -517,7 +519,7 @@ def dist_rank(data_x, k, data_y=None, largest=False, opt=None, include_self=Fals
         del dist
         del x
         if i % 500 == 0:
-            print('chunk ', i)
+            print('chunk ', i, '/', total_chunks)
 
     topk = dist_mx
     if k > 3 and opt is not None and opt.sift:
