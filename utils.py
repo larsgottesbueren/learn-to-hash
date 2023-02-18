@@ -61,7 +61,7 @@ Returns opt.
 '''
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--n_clusters', default=N_CLUSTERS, type=int, help='number of cluseters' )
+    parser.add_argument('--n_clusters', default=N_CLUSTERS, type=int, help='number of clusters' )
     parser.add_argument('--kahip_config', default='strong', help='fast, eco, or strong' )
     parser.add_argument('--parts_path_root', default=parts_path, help='path root to partition')
     parser.add_argument('--dsnode_path', default=dsnode_path, help='path to datanode dsnode for training')
@@ -139,6 +139,10 @@ def parse_args():
         
     if not opt.fast_kmeans:
         print('NOTE: fast_kmeans not enabled')
+
+    name2config = read_config()
+    opt.kahip_dir = name2config['kahip_dir'] 
+    opt.data_dir = name2config['data_dir'] 
         
     return opt 
 

@@ -11,7 +11,7 @@ if __name__ == '__main__':
     opt = utils.parse_args()
 
     #adjust the number of parts and the height of the hierarchy
-    n_cluster_l = [2]
+    n_cluster_l = [16]
     height_l = [1]
 
     # load dataset 

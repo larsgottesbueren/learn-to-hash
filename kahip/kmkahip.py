@@ -425,6 +425,7 @@ def create_data_tree_root(dataset, all_ranks, ds_idx, train_node, idx2bin, heigh
     if datalen <= opt.k:
         return None
     graph_path = os.path.join(opt.data_dir, opt.graph_file) #'../data/knn.graph'
+    print("graphpath=", graph_path)
     
     #ranks are 1-based
     if opt.glove or opt.sift or opt.prefix10m: #and len(branching_l) == 1:
@@ -438,6 +439,7 @@ def create_data_tree_root(dataset, all_ranks, ds_idx, train_node, idx2bin, heigh
             print('graph file {}'.format(graph_path))
         parts_path = run_kahip(graph_path, datalen, branching_l, height, opt)
         print('Done partitioning top level!')
+        print('parts path', parts_path)
         lines = utils.load_lines(parts_path)
         classes = [int(line) for line in lines]
         

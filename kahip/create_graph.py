@@ -139,7 +139,7 @@ def write_knn_graph(ranks, path):
     
     is_tensor = isinstance(ranks, torch.Tensor)
     print('in write knn graph')
-    pdb.set_trace()
+    #pdb.set_trace()
     
     
     if is_tensor:
@@ -187,7 +187,7 @@ def deserialize_create_graph():
     
     ##data = torch.from_numpy(np.load('../data/queries_unnorm.npy'))
     #data = torch.from_numpy(np.load(osp.join(utils.data_dir, 'sift_dataset_unnorm.npy')))
-    dataset_name = 'prefix10m' #'glove'
+    dataset_name = 'glove'
     #opt.ranks_path = 'data/{}_answers.npy'.format(dataset_name)
     
     #10 is subsampling frequency

@@ -69,10 +69,10 @@ def run_kahip(graph_path, datalen, branching_l, height, opt):
         
     if opt.glove and (branching_l_len == 1):
         #if glove top level, use precomputed partition
-        parts_path = utils.glove_top_parts_path(opt.n_clusters)
+        parts_path = utils.glove_top_parts_path(opt.n_clusters, opt)
     elif opt.sift and (branching_l_len == 1):
         #if glove top level, use precomputed partition
-        parts_path = utils.sift_top_parts_path(opt.n_clusters) ##implement!!
+        parts_path = utils.sift_top_parts_path(opt.n_clusters, opt) ##implement!!
         
     elif (branching_l_len > 1 or not os.path.exists(parts_path)):        
         #cmd = "LD_LIBRARY_PATH=./KaHIP/extern/argtable-2.10/lib ./KaHIP/deploy/kaffpa " + graph_file + " --preconfiguration=" + configuration + " --output_filename=" + output_file + " --k=" + str(num_parts)   
@@ -377,7 +377,9 @@ sorted according to index.
 '''
 def read_all_ranks_glove(opt):
     ##need weights!!!!!!!!!!!!
-    graph_path = osp.join(utils.glove_dir, 'normalized','knn_100','graph_10', 'graph.txt')
+    # graph_path = osp.join(utils.glove_dir, 'normalized','knn_100','graph_10', 'graph.txt')
+    graph_path = osp.join(utils.data_dir, 'glove10knn.graph')
+    print(graph_path)
     ranks = []
     
     lines = utils.load_lines(graph_path)[1:]
