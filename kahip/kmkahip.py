@@ -621,7 +621,6 @@ def run_kmkahip(height_preset, opt, dataset, queryset, neighbors):
     n_clusters = opt.n_clusters
     
     height = height_preset
-    n_bins = 1
     
     ds_idx = torch.LongTensor(list(range(len(dataset))))
     print('{} height: {} level2action {}'.format(ds_idx.size(), height, opt.level2action))
@@ -634,23 +633,30 @@ def run_kmkahip(height_preset, opt, dataset, queryset, neighbors):
     
     root_dsnode = create_data_tree_root(dataset, all_ranks, ds_idx, train_node, idx2bin, height, branching_l,ht2cutsz, opt)
     print('Done creating training tree. Starting evaluation ...')
-
-    #top node only first child node is train node.
-    eval_root = train.EvalNode(train_node.children[0])
-
+    
+    # Alternative to jump straight to queries through serialized model
+    serial_path = 'evalroot_{}_ht{}_{}_{}{}nn{}'
+    eval_root_path = osp.join(opt.data_dir, serial_path.format(data_name, height, n_clusters, opt.k_graph, opt.k, opt.nn_mult))
+    if os.path.exists(eval_root_path)
+        eval_root = utils.pickle_load(eval_root_path)['eval_root']
+    else:
+        #top node only first child node is train node.
+        eval_root = train.EvalNode(train_node.children[0])
     ''' Evaluate '''
     
     with torch.no_grad():
-        print('About to evaluate model! {} height: {} level2action {}'.format(ds_idx.size(), height, opt.level2action))                    
-        acc, probe_count, probe_count95 = train.eval_model(eval_root, queryset, neighbors, n_bins, opt)
+        for n_bins in range(1, n_clusters + 1):
+            print('About to evaluate model! {} height: {} level2action: {} n_bins: {}'.format(ds_idx.size(), height, opt.level2action, n_bins))                    
+            acc, probe_count, probe_count95 = train.eval_model(eval_root, queryset, neighbors, n_bins, opt)
+            print('acc {} probe count {} 95th {}'.format(acc, probe_count, probe_count95))
     
     print('cut_sizes {}'.format(ht2cutsz))
     print('Configs: {}'.format(opt))
-    print('acc {} probe count {} 95th {}'.format(acc, probe_count, probe_count95))
 
     ''' Serialize '''
     serialize_bool = False if 'kahip' in set(opt.level2action.values()) else True
     serialize_bool = True
+    serialize_bool = not os.path.exists(eval_root_path)
     if serialize_bool:
         print('Serializing eval root...')
         if opt.sift:
