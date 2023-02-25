@@ -626,10 +626,10 @@ def run_kmkahip(height_preset, opt, dataset, queryset, neighbors):
     if os.path.exists(eval_root_path):
         eval_root = utils.pickle_load(eval_root_path)['eval_root']
         with torch.no_grad():
-        for n_bins in range(1, n_clusters + 1):
-            print('About to evaluate model! height: {} level2action: {} n_bins: {}'.format(height, opt.level2action, n_bins))                    
-            acc, probe_count, probe_count95 = train.eval_model(eval_root, queryset, neighbors, n_bins, opt)
-            print('acc {} probe count {} 95th {}'.format(acc, probe_count, probe_count95))
+            for n_bins in range(1, n_clusters + 1):
+                print('About to evaluate model! height: {} level2action: {} n_bins: {}'.format(height, opt.level2action, n_bins))                    
+                acc, probe_count, probe_count95 = train.eval_model(eval_root, queryset, neighbors, n_bins, opt)
+                print('acc {} probe count {} 95th {}'.format(acc, probe_count, probe_count95))
         return
     
     ds_idx = torch.LongTensor(list(range(len(dataset))))
