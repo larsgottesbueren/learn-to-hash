@@ -622,7 +622,8 @@ def run_kmkahip(height_preset, opt, dataset, queryset, neighbors):
     
     height = height_preset
 
-
+    serial_path = 'evalroot_{}_ht{}_{}_{}{}nn{}'
+    eval_root_path = osp.join(opt.data_dir, serial_path.format(data_name, height, n_clusters, opt.k_graph, opt.k, opt.nn_mult))
     if os.path.exists(eval_root_path):
         eval_root = utils.pickle_load(eval_root_path)['eval_root']
         with torch.no_grad():
